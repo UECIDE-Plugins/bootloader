@@ -46,22 +46,39 @@ public class Bootloader extends Plugin {
 
     }
 
+    class ProgrammerThread extends Thread {
+        String programmer;
+        String bootloader;
+
+        public ProgrammerThread(String prog, String bl) {
+            programmer = prog;
+            bootloader = bl;
+        }
+
+        public void run() {
+            editor.clearConsole();
+            Sketch sketch = editor.getSketch();
+            Context ctx = sketch.getContext();
+            sketch.programFile(programmer, bootloader);
+        }
+    }
+
     public void doProgram(String prog) {
-        editor.clearConsole();
+        
         Sketch sketch = editor.getSketch();
-        PropertyFile props = sketch.mergeAllProperties();
-        editor.message("Programming bootloader using " + prog);
-        String bl = sketch.parseString(props.get("bootloader.file"));
-        editor.message("Bootloader: " + bl);
+        Context ctx = sketch.getContext();
+        PropertyFile props = ctx.getMerged();
+        String bl = ctx.parseString(props.get("bootloader.file"));
         if (bl == null) {
             String url = sketch.parseString(props.get("bootloader.url"));
             if (url != null) {
-                editor.error("The bootloader can be downloaded from " + url);
+                ctx.error("The bootloader can be downloaded from " + url);
                 return;
             }
         }
 
-        sketch.programFile(prog, bl);
+        ProgrammerThread thread = new ProgrammerThread(prog, bl);
+        thread.start();
     }
 
     public void addToolbarButtons(JToolBar toolbar, int flags) {
