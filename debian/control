@@ -1,0 +1,16 @@
+Source: bootloader
+Section: plugins
+Priority: optional
+Maintainer: Matt Jenkins <matt@majenko.co.uk>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+
+Package: bootloader
+Section: plugins
+Architecture: all
+XBSC-Group: Programming
+Description: Bootloader
+ Burn bootloaders onto blank chips
+
+
+

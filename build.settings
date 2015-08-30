@@ -1,0 +1,6 @@
+version=0.8.8b
+version.minimum=0.8.7z26
+description=Burn a bootloader onto a blank chip using a hardware programmer
+# Path relative to a plugin directory, not this directory
+uecide.path=/usr/share/uecide
+install.path=/home/matt/.uecide/plugins
